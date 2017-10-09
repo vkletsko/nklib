@@ -42,13 +42,8 @@
     binary() | error.
 
 encode(Term) ->
-    try 
-        case erlang:function_exported(jiffy, encode, 1) of
-            true ->
-                jiffy:encode(Term);
-            false ->
-                jsx:encode(Term)
-        end
+    try
+        jsx:encode(Term)
     catch
         error:Error -> 
             lager:debug("Error encoding JSON: ~p", [Error]),
@@ -65,12 +60,7 @@ encode(Term) ->
 
 encode_pretty(Term) ->
     try
-        case erlang:function_exported(jiffy, encode, 2) of
-            true ->
-                jiffy:encode(Term, [pretty]);
-            false ->
-                jsx:encode(Term, [space, {indent, 2}])
-        end
+        jsx:encode(Term, [space, {indent, 2}])
     catch
         error:Error -> 
             lager:debug("Error encoding JSON: ~p", [Error]),
@@ -87,12 +77,7 @@ encode_pretty(Term) ->
 
 decode(Term) ->
     try
-        case erlang:function_exported(jiffy, decode, 2) of
-            true ->
-                jiffy:decode(Term, [return_maps]);
-            false ->
-                jsx:decode(Term, [return_maps])
-        end
+        jsx:decode(Term, [return_maps])
     catch
         error:Error -> 
             lager:debug("Error decoding JSON: ~p", [Error]),
